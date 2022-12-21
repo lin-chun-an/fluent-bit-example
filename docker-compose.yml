@@ -1,0 +1,43 @@
+version: "3"
+services:
+  fluentd:
+    image: fluent/fluent-bit
+    container_name: fluentbit
+    volumes:
+      - ./conf:/fluent-bit/etc
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    hostname: fluentd
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 100m
+        max-file: "5"
+  # nginx:
+  #   container_name: nginx1
+  #   logging:
+  #     driver: fluentd
+  #     options:
+  #       fluentd-address: localhost:24224
+  #       tag: nginx
+  #   image: nginx
+  #   ports:
+  #     - "8082:80"
+  #   depends_on:
+  #     - fluentd
+  #   hostname: nginx
+  # nginx2:
+  #   container_name: nginx2
+  #   logging:
+  #     driver: fluentd
+  #     options:
+  #       fluentd-address: localhost:24224
+  #       fluentd-async-connect: "true"
+  #       tag: nginx
+  #   image: nginx
+  #   ports:
+  #     - "8081:80"
+  #   depends_on:
+  #     - fluentd
+  #   hostname: nginx2
